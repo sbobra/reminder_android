@@ -53,11 +53,6 @@ public class AlarmManagerActivity extends Activity {
     	}
     }
     
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_widget_alarm_manager, menu);
-        return true;
-    }
 
     
 }

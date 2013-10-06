@@ -7,16 +7,27 @@ import com.rakesh.alarmmanagerexample.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 public class NewPostActivity extends Activity {
 	//NewPostController controller;
+	public Button next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //controller = new NewPostController(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_newpost);
+		next = (Button) findViewById(R.id.newpost_next1);
+		next.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent(getBaseContext(), NewPostActivity2.class));
+				finish();
+			}
+		});
     }
 
 
