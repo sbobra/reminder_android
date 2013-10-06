@@ -5,33 +5,27 @@ import model.State;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+//import com.example.reminder.controller.NewPostController;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
-//import com.example.reminder.controller.NewPostController;
 
-public class NewPostActivity extends Activity {
+public class NewPostActivity2 extends Activity {
 	//NewPostController controller;
 	public Button next;
-	public int buttonSelected = 0;
-
+	int buttonSelected = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //controller = new NewPostController(this);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_newpost);
-		next = (Button) findViewById(R.id.newpost_next1);
+        setContentView(R.layout.activity_newpost2);
+        next = (Button) findViewById(R.id.newpost2_next1);
 		next.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Post p = new Post();
-				p.setFeeling(buttonSelected);
+				Post p = State.getInstance().getNewPost();
+				p.setActivityId(buttonSelected);
 				State.getInstance().setNewPost(p);
-				startActivity(new Intent(getBaseContext(), NewPostActivity2.class));
+				startActivity(new Intent(getBaseContext(), NewPostActivity3.class));
 				finish();
 			}
 		});
@@ -42,23 +36,23 @@ public class NewPostActivity extends Activity {
         boolean checked = ((RadioButton) view).isChecked();
         // Check which radio button was clicked
         switch(view.getId()) {
-            case R.id.newPost1_op1:
+            case R.id.newPost2_op1:
                 if (checked) 
                 	buttonSelected = 0;
                 break;
-            case R.id.newPost1_op2:
+            case R.id.newPost2_op2:
                 if (checked)
                     buttonSelected = 1;
                 break;
-            case R.id.newPost1_op3:
+            case R.id.newPost2_op3:
                 if (checked)
                     buttonSelected = 2;
                 break;
-            case R.id.newPost1_op4:
+            case R.id.newPost2_op4:
                 if (checked)
                     buttonSelected = 3;
                 break;
-            case R.id.newPost1_op5:
+            case R.id.newPost2_op5:
                 if (checked)
                     buttonSelected = 4;
                 break;
@@ -72,9 +66,11 @@ public class NewPostActivity extends Activity {
 //        getMenuInflater().inflate(R.menu.main, menu);
 //        return true;
 //    }
+    
     @Override
     public void onBackPressed() {
-		startActivity(new Intent(this, DataActivity.class));
+		startActivity(new Intent(this, NewPostActivity.class));
 		finish();
     }
+    
 }

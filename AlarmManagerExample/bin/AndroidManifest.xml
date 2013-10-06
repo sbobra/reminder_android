@@ -4,15 +4,17 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="17" />
     <!-- Permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.rakesh.alarmmanagerexample.AlarmManagerActivity"
             android:label="@string/title_activity_alarm_manager" >
@@ -40,6 +42,10 @@
         </activity>
         <activity
             android:name="com.rakesh.alarmmanagerexample.MenuActivity"
+            android:label="@string/title_activity_alarm_manager" >
+        </activity>
+        <activity
+            android:name="com.rakesh.alarmmanagerexample.DataActivity"
             android:label="@string/title_activity_alarm_manager" >
         </activity>
         <!-- Broadcast receiver -->

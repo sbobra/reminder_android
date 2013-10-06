@@ -3,7 +3,7 @@ package controller;
 import com.loopj.android.http.*;
 
 public class RESTClient {
-  private static final String BASE_URL = "http://api.twitter.com/1/";
+  private static final String BASE_URL = "http://re-minder.herokuapp.com";
 
   private static AsyncHttpClient client = new AsyncHttpClient();
 

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -42,6 +44,9 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_login);
 		controller = new LoginController(this);
 
@@ -61,7 +66,7 @@ public class LoginActivity extends Activity {
 					controller.onLoginPressed(usernameTextBox.getText()
 							.toString(), passwordTextBox.getText().toString());
 				}
-				startActivity(new Intent(getBaseContext(), MenuActivity.class));
+				startActivity(new Intent(getBaseContext(), DataActivity.class));
 				finish();
 			}
 		});
@@ -82,7 +87,7 @@ public class LoginActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_widget_alarm_manager, menu);
+		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
 	

@@ -1,17 +1,14 @@
 package com.rakesh.alarmmanagerexample;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.PowerManager;
-import android.widget.Toast;
+import android.support.v4.app.NotificationCompat;
 
 public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 
@@ -24,21 +21,28 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
          wl.acquire();
 
          //You can do the processing here update the widget/remote views.
-         Bundle extras = intent.getExtras();
-         StringBuilder msgStr = new StringBuilder();
+//         Bundle extras = intent.getExtras();
+//         StringBuilder msgStr = new StringBuilder();
+//         
+//         if(extras != null && extras.getBoolean(ONE_TIME, Boolean.FALSE)){
+//        	 msgStr.append("One time Timer : ");
+//         }
+//         Format formatter = new SimpleDateFormat("hh:mm:ss a");
+//         msgStr.append(formatter.format(new Date()));
+//
+//         Toast.makeText(context, msgStr, Toast.LENGTH_LONG).show();
          
-         if(extras != null && extras.getBoolean(ONE_TIME, Boolean.FALSE)){
-        	 msgStr.append("One time Timer : ");
-         }
-         Format formatter = new SimpleDateFormat("hh:mm:ss a");
-         msgStr.append(formatter.format(new Date()));
-
-         Toast.makeText(context, msgStr, Toast.LENGTH_LONG).show();
+         createNotification(context);
+         
+         
          
          //Release the lock
          wl.release();
          
 	}
+	
+	
+	
 	public void SetAlarm(Context context)
     {
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -46,7 +50,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         intent.putExtra(ONE_TIME, Boolean.FALSE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         //After after 30 seconds
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 5 , pi); 
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10 , pi); 
     }
 
     public void CancelAlarm(Context context)
@@ -63,4 +67,35 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pi);
     }
+    
+    public void createNotification(Context c) {
+		NotificationCompat.Builder mBuilder =
+		        new NotificationCompat.Builder(c)
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setContentTitle("Re-Minder")
+		        .setContentText("How are you feeling?")
+		        .setAutoCancel(true);
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(c, AlarmManagerActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(AlarmManagerActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+		        stackBuilder.getPendingIntent(
+		            0,
+		            PendingIntent.FLAG_UPDATE_CURRENT
+		        );
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+		    (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(1, mBuilder.build());
+	}
 }
