@@ -52,6 +52,16 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
         //After after 30 seconds
         am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10 , pi); 
     }
+	
+	public void SetLongAlarm(Context context)
+    {
+        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+        intent.putExtra(ONE_TIME, Boolean.FALSE);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+        //After after a minute
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 , pi); 
+    }
 
     public void CancelAlarm(Context context)
     {
@@ -76,7 +86,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 		        .setContentText("How are you feeling?")
 		        .setAutoCancel(true);
 		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(c, AlarmManagerActivity.class);
+		Intent resultIntent = new Intent(c, NewPostActivity.class);
 
 		// The stack builder object will contain an artificial back stack for the
 		// started Activity.
@@ -84,7 +94,7 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 		// your application to the Home screen.
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
 		// Adds the back stack for the Intent (but not the Intent itself)
-		stackBuilder.addParentStack(AlarmManagerActivity.class);
+		stackBuilder.addParentStack(NewPostActivity.class);
 		// Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent =

@@ -5,72 +5,76 @@ import model.State;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-//import com.example.reminder.controller.NewPostController;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.ImageView;
+import android.widget.TableRow;
+//import com.example.reminder.controller.NewPostController;
 
 public class NewPostActivity2 extends Activity {
-	//NewPostController controller;
+	// NewPostController controller;
 	public Button next;
 	int buttonSelected = 0;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //controller = new NewPostController(this);
-        setContentView(R.layout.activity_newpost2);
-        next = (Button) findViewById(R.id.newpost2_next1);
+	public int[] imageArray = { R.id.imageView1, R.id.imageView2,
+			R.id.imageView3, R.id.imageView4, R.id.imageView5 };
+	public int[] tableRowArray = { R.id.tableRow1, R.id.tableRow2,
+			R.id.tableRow3, R.id.tableRow4, R.id.tableRow5 };
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// controller = new NewPostController(this);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(R.layout.activity_newpost2);
+		next = (Button) findViewById(R.id.newpost2_next1);
 		next.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Post p = State.getInstance().getNewPost();
 				p.setActivityId(buttonSelected);
 				State.getInstance().setNewPost(p);
-				startActivity(new Intent(getBaseContext(), NewPostActivity3.class));
+				startActivity(new Intent(getBaseContext(),
+						NewPostActivity3.class));
 				finish();
 			}
 		});
-    }
-    
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.newPost2_op1:
-                if (checked) 
-                	buttonSelected = 0;
-                break;
-            case R.id.newPost2_op2:
-                if (checked)
-                    buttonSelected = 1;
-                break;
-            case R.id.newPost2_op3:
-                if (checked)
-                    buttonSelected = 2;
-                break;
-            case R.id.newPost2_op4:
-                if (checked)
-                    buttonSelected = 3;
-                break;
-            case R.id.newPost2_op5:
-                if (checked)
-                    buttonSelected = 4;
-                break;
-        }
-    }
+		setRowOnClicks();
+	}
 
+	public void setRowOnClicks() {
+		for (int i = 0; i < tableRowArray.length; i++) {
+			final int j = i;
+			((TableRow) findViewById(tableRowArray[j]))
+					.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							((ImageView) findViewById(imageArray[buttonSelected]))
+									.setImageResource(R.drawable.unchecked_checkbox);
+							((TableRow) findViewById(tableRowArray[buttonSelected]))
+									.setBackgroundResource(R.color.lightgray);
+							buttonSelected = j;
+							((ImageView) findViewById(imageArray[buttonSelected]))
+									.setImageResource(R.drawable.checked_checkbox);
+							((TableRow) findViewById(tableRowArray[buttonSelected]))
+									.setBackgroundResource(R.color.darkgray);
+						}
+					});
+		}
+	}
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-    
-    @Override
-    public void onBackPressed() {
+	// @Override
+	// public boolean onCreateOptionsMenu(Menu menu) {
+	// // Inflate the menu; this adds items to the action bar if it is present.
+	// getMenuInflater().inflate(R.menu.main, menu);
+	// return true;
+	// }
+
+	@Override
+	public void onBackPressed() {
 		startActivity(new Intent(this, NewPostActivity.class));
 		finish();
-    }
-    
+	}
+
 }

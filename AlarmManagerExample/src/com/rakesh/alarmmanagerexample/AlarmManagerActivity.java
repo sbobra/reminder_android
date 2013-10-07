@@ -50,6 +50,15 @@ public class AlarmManagerActivity extends Activity {
     	}
     }
     
+    public void startRepeatingTimerLong(View view) {
+    	Context context = this.getApplicationContext();
+    	if(alarm != null){
+    		alarm.SetLongAlarm(context);
+    	}else{
+    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
+    	}
+    }
+    
     public void cancelRepeatingTimer(View view){
     	Context context = this.getApplicationContext();
     	if(alarm != null){
@@ -59,14 +68,14 @@ public class AlarmManagerActivity extends Activity {
     	}
     }
     
-    public void onetimeTimer(View view){
-    	Context context = this.getApplicationContext();
-    	if(alarm != null){
-    		alarm.setOnetimeTimer(context);
-    	}else{
-    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
-    	}
-    }
+//    public void onetimeTimer(View view){
+//    	Context context = this.getApplicationContext();
+//    	if(alarm != null){
+//    		alarm.setOnetimeTimer(context);
+//    	}else{
+//    		Toast.makeText(context, "Alarm is null", Toast.LENGTH_SHORT).show();
+//    	}
+//    }
     
     
     public void createNotification() {

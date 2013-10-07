@@ -1,8 +1,9 @@
 package com.rakesh.alarmmanagerexample;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+
+import model.Post;
+import model.State;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -10,48 +11,59 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import controller.RESTClient;
-import model.Post;
-import model.State;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-//import com.example.reminder.controller.NewPostController;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TableRow;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import controller.RESTClient;
+//import com.example.reminder.controller.NewPostController;
 
 public class NewPostActivity3 extends Activity {
 	// NewPostController controller;
 	public Button submit;
 	public int buttonSelected = 0;
+	public int[] imageArray = { R.id.imageView1, R.id.imageView2,
+			R.id.imageView3, R.id.imageView4, R.id.imageView5 };
+	public int[] tableRowArray = { R.id.tableRow1, R.id.tableRow2,
+			R.id.tableRow3, R.id.tableRow4, R.id.tableRow5 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// controller = new NewPostController(this);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_newpost3);
 		submit = (Button) findViewById(R.id.newpost3_next1);
 		submit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Post p = State.getInstance().getNewPost();
 				p.setFunctioning(buttonSelected);
+				String note = ((EditText) findViewById(R.id.noteText)).getText().toString();
+				p.setNote(note);
 				State.getInstance().setNewPost(p);
 				Log.i("NewPostActivity3",
 						"Getting ready to post: " + p.getFeeling() + ", "
-								+ p.getActivityId() + ", " + p.getFunctioning());
+								+ p.getActivityId() + ", " + p.getFunctioning() + ", " + p.getNote());
 
 				new PostTask().execute();
 
@@ -59,6 +71,7 @@ public class NewPostActivity3 extends Activity {
 				finish();
 			}
 		});
+		setRowOnClicks();
 	}
 
 	public void postData2() throws JSONException {
@@ -81,31 +94,23 @@ public class NewPostActivity3 extends Activity {
 		});
 	}
 
-	public void onRadioButtonClicked(View view) {
-		// Is the button now checked?
-		boolean checked = ((RadioButton) view).isChecked();
-		// Check which radio button was clicked
-		switch (view.getId()) {
-		case R.id.newPost3_op1:
-			if (checked)
-				buttonSelected = 0;
-			break;
-		case R.id.newPost3_op2:
-			if (checked)
-				buttonSelected = 1;
-			break;
-		case R.id.newPost3_op3:
-			if (checked)
-				buttonSelected = 2;
-			break;
-		case R.id.newPost3_op4:
-			if (checked)
-				buttonSelected = 3;
-			break;
-		case R.id.newPost3_op5:
-			if (checked)
-				buttonSelected = 4;
-			break;
+	public void setRowOnClicks() {
+		for (int i = 0; i < tableRowArray.length; i++) {
+			final int j = i;
+			((TableRow) findViewById(tableRowArray[j]))
+					.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							((ImageView) findViewById(imageArray[buttonSelected]))
+									.setImageResource(R.drawable.unchecked_checkbox);
+							((TableRow) findViewById(tableRowArray[buttonSelected]))
+									.setBackgroundResource(R.color.lightgray);
+							buttonSelected = j;
+							((ImageView) findViewById(imageArray[buttonSelected]))
+									.setImageResource(R.drawable.checked_checkbox);
+							((TableRow) findViewById(tableRowArray[buttonSelected]))
+									.setBackgroundResource(R.color.darkgray);
+						}
+					});
 		}
 	}
 
@@ -137,10 +142,10 @@ public class NewPostActivity3 extends Activity {
 			JSONObject json = new JSONObject();
 			String str;
 			try {
-				json.put("feeling", p.getFeeling());
-				json.put("functioning", p.getFunctioning());
-				json.put("activity_id", p.getActivityId());
-				json.put("notes", "testing from sam");
+				json.put("feeling", p.getFeeling() + 1);
+				json.put("functioning", p.getFunctioning() + 1);
+				json.put("activity_id", p.getActivityId() + 1);
+				json.put("notes", p.getNote());
 				str = json.toString();
 
 			} catch (JSONException e1) {

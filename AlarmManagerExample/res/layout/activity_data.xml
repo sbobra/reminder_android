@@ -11,20 +11,12 @@
         android:orientation="vertical"
         android:padding="16dp" >
 
-        <TextView
-            android:id="@android:id/text1"
-            style="?android:textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Data"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/refreshButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refresh" />
+            android:text="Refresh Posts" />
 
         <TableLayout
             android:id="@+id/tableLayout"
